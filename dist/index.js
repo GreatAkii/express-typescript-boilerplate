@@ -16,7 +16,7 @@ const connection = mysql2_1.default.createConnection({
 });
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.get('/', (req, res) => {
+app.get('/discovery', (req, res) => {
     connection.query('SELECT * FROM squid.businesses', (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Internal Server Error' });
