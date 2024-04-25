@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "npm run build",
-    "start": "node dist/index.js",
     "predev": "rimraf dist && npx tsc",
-    "dev": "npx tsc -w & nodemon dist/index.js"
+    "dev": "npx tsc -w & nodemon dist/index.js",
+    "prestart": "npm run predev",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
