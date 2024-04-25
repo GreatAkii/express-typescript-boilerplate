@@ -1,21 +1,23 @@
-import express, { Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const app = express();
-const connection = mysql.createConnection({
+const app:Express = express();
+const connection = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'squid',
+  connectionLimit: 10,
+  maxIdle:10,
 });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/discovery', (req: Request, res: Response) => {
-  connection.query('SELECT * FROM squid.businesses', (err, results) => {
+  connection.query('SELECT name,latitude,longitude FROM squid.businesses', (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Internal Server Error' });
     }

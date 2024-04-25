@@ -8,16 +8,18 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const connection = mysql2_1.default.createConnection({
+const connection = mysql2_1.default.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'squid',
+    connectionLimit: 10,
+    maxIdle: 10,
 });
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.get('/discovery', (req, res) => {
-    connection.query('SELECT * FROM squid.businesses', (err, results) => {
+    connection.query('SELECT name,latitude,longitude FROM squid.businesses', (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
