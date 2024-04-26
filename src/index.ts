@@ -1,12 +1,21 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import db from "./db";
+import pino from "pino";
+import pinoHttp from "pino-http";
 
 dotenv.config();
 const app: Express = express();
 const database = new db();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+console.log(`Running in ${app.get("env")} mode`);
+if (app.get("env") === "development") {
+  const logger = pino();
+  app.use(pinoHttp({ logger }));
+}
 
 app.get("/discovery", (req: Request, res: Response) => {
   database

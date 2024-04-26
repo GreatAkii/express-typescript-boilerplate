@@ -6,16 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "predev": "rimraf dist && npx tsc",
-    "dev": "npx tsc -w & nodemon dist/index.js",
+    "dev": "export NODE_ENV=development && npx tsc -w & nodemon dist/index.js",
     "prestart": "npm i && npm run predev",
-    "start": "node dist/index.js"
+    "start": "export NODE_ENV=production && node dist/index.js"
   },
-  "keywords": [],
+  "keywords": [], 
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
+    "pino": "^9.0.0",
+    "pino-http": "^9.0.0",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.5"
   },
