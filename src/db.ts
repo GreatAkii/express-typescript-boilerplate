@@ -1,7 +1,17 @@
-import mysql, { Pool } from "mysql2";
+import mysql, { Pool, RowDataPacket } from "mysql2";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+//Represents a business entity.
+export interface Business extends RowDataPacket {
+  id: number;
+  longitude: number;
+  latitude: number;
+  type: string;
+}
+
+//Represents a database connection.
 class DB {
   private pool: Pool;
   constructor() {
@@ -16,9 +26,10 @@ class DB {
     });
   }
 
+  //Executes a SQL query and returns the results of type Business[].
   public query(sql: string) {
-    return new Promise((resolve, reject) => {
-      this.pool.query(sql, (err: Error | null, results: Object | null) => {
+    return new Promise<Business[]>((resolve, reject) => {
+      this.pool.query<Business[]>(sql, (err, results) => {
         if (err) {
           reject(new Error("Error retrieving data from database"));
         }

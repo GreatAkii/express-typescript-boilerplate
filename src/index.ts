@@ -27,6 +27,9 @@ app.get("/discovery", (req: Request, res: Response) => {
   database
     .query("SELECT * FROM squid.businesses")
     .then((results) => {
+      results.forEach((result) => {
+        console.log(result);
+      });
       res.json(results);
     })
     .catch((err) => {

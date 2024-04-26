@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+//Represents a database connection.
 class DB {
     constructor() {
         dotenv_1.default.config();
@@ -18,6 +19,7 @@ class DB {
             maxIdle: 10,
         });
     }
+    //Executes a SQL query and returns the results of type Business[].
     query(sql) {
         return new Promise((resolve, reject) => {
             this.pool.query(sql, (err, results) => {
