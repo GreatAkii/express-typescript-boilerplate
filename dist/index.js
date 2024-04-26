@@ -13,7 +13,7 @@ const app = (0, express_1.default)();
 const database = new db_1.default();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-console.log(`Running in ${app.get("env")} mode`);
+console.log(`> running in ${app.get("env")} mode`);
 if (app.get("env") === "development") {
     const logger = (0, pino_1.default)();
     app.use((0, pino_http_1.default)({ logger }));

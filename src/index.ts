@@ -11,7 +11,7 @@ const database = new db();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-console.log(`Running in ${app.get("env")} mode`);
+console.log(`> running in ${app.get("env")} mode`);
 if (app.get("env") === "development") {
   const logger = pino();
   app.use(pinoHttp({ logger }));
@@ -32,5 +32,5 @@ const port: number = process.env.APP_PORT
   ? parseInt(process.env.APP_PORT)
   : 3000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}...`);
+  console.log(`Server listening on port ${port}...`);
 });
