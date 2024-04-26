@@ -4,29 +4,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = __importDefault(require("./db"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const connection = mysql2_1.default.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'squid',
-    connectionLimit: 10,
-    maxIdle: 10,
-});
+const database = new db_1.default();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.get('/discovery', (req, res) => {
-    connection.query('SELECT name,latitude,longitude FROM squid.businesses', (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: 'Internal Server Error' });
-        }
+app.get("/discovery", (req, res) => {
+    database
+        .query("SELECT * FROM squid.businesses")
+        .then((results) => {
         res.json(results);
+    })
+        .catch((err) => {
+        res.status(500).json({ error: "Error retrieving data from database" });
     });
 });
-const port = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000;
+const port = process.env.APP_PORT
+    ? parseInt(process.env.APP_PORT)
+    : 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}...`);
 });
